@@ -1,0 +1,323 @@
+
+/* ===== FAB & CHAT ===== */
+.fab-container {
+    position: fixed;
+    z-index: 2500;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.fab-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab-btn:hover {
+    transform: scale(1.1);
+}
+
+.ai-btn {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+}
+
+.fab-panel {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 300px;
+    max-height: 400px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+}
+
+.fab-panel.active {
+    display: flex;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#historyList {
+    list-style: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#historyList li {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--gray-100);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#historyList li:hover {
+    background: var(--gray-50);
+}
+
+.chat-panel {
+    width: 350px;
+    height: 500px;
+}
+
+.chat-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn-sm {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--gray-50);
+}
+
+.chat-msg {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.chat-msg.bot {
+    background: white;
+    border: 1px solid var(--gray-200);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.chat-msg.user {
+    background: var(--primary);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.chat-input {
+    padding: 10px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    gap: 10px;
+    background: white;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--gray-300);
+    border-radius: 20px;
+    outline: none;
+}
+
+/* ===== FLOATING ACTION BUTTON (FAB) SYSTEM ===== */
+.fab-draggable {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.1s; /* Smooth drag */
+    touch-action: none; /* Prevent scroll on drag */
+}
+
+.fab-main .fab-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), #4f46e5);
+    color: white;
+    font-size: 1.8rem;
+    border: none;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    cursor: grab;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab-main .fab-btn:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.fab-menu {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+/* Show menu when active class is added by JS */
+.fab-draggable.active .fab-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.fab-draggable.active .fab-main .fab-btn {
+    transform: rotate(45deg);
+    background: #ef4444; /* Red close color */
+}
+
+.fab-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    color: #333;
+    font-size: 1.4rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fab-draggable.active .fab-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--i) * 0.05s);
+}
+
+.fab-item:hover {
+    transform: scale(1.1);
+    color: var(--primary);
+}
+
+/* Tooltip for items */
+.fab-item::after {
+    content: attr(title);
+    position: absolute;
+    right: 60px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.fab-item:hover::after {
+    opacity: 1;
+}
+
+/* Independent Panels */
+.fab-panel {
+    display: none; /* Managed by JS */
+    position: fixed;
+    /* bottom/right set inline or via JS relative to FAB */
+    width: 320px;
+    max-height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    z-index: 1999;
+    padding: 15px;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.fab-panel.active {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chat & History Styles (Reused) */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    min-height: 200px;
+}
+
+.chat-input {
+    display: flex;
+    gap: 8px;
+}
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+.chat-input button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Sticky Menu */
+.sticky-menu {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    margin-top: 0 !important;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl) !important;
+}
+
+#pinMenuBtn {
+    transition: all 0.3s ease;
+}
